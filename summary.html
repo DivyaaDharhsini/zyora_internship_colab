@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitTrack | Weekly Summary</title>
+
+  <!-- Google Fonts: Poppins (headings) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Shared design system (navbar, footer, buttons, tokens) -->
+  <link rel="stylesheet" href="css/shared.css" />
+</head>
+<body>
+
+  <!-- NAVBAR — identical on every page; move navbar__link--active to the current page's link -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo" aria-hidden="true">&#9889;</span>
+        Fit<span class="navbar__brand-accent">Track</span>
+      </a>
+
+      <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox" />
+      <label for="nav-toggle" class="navbar__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </label>
+
+      <nav class="navbar__links" aria-label="Main navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="exercise.html" class="navbar__link">Exercise Library</a>
+        <a href="bmi.html" class="navbar__link">BMI Calculator</a>
+        <a href="dailylog.html" class="navbar__link">Daily Log</a>
+        <a href="summary.html" class="navbar__link navbar__link--active">Weekly Summary</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- TODO: Weekly Summary content goes here (owner: Sindhu) -->
+  </main>
+
+  <!-- FOOTER — identical on every page -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span aria-hidden="true">&#9889;</span> FitTrack
+      </div>
+      <nav class="footer__links" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="exercise.html">Exercises</a>
+        <a href="bmi.html">BMI</a>
+        <a href="dailylog.html">Daily Log</a>
+        <a href="summary.html">Summary</a>
+      </nav>
+      <p class="footer__copy">&copy; 2026 FitTrack. Built by Team FitTrack.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
