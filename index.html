@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FitTrack — track workouts, browse exercises, calculate BMI and stay on top of your fitness goals." />
   <title>FitTrack | Home</title>
 
   <!-- Google Fonts: Poppins (headings) + Inter (body) -->
@@ -13,12 +14,15 @@
     rel="stylesheet"
   />
 
-  <!-- Shared design system (navbar, footer, buttons, tokens) -->
+  <!-- Shared design system first, then page-specific styles -->
   <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
 
-  <!-- NAVBAR — identical on every page; move navbar__link--active to the current page's link -->
+  <!-- ============================================================
+       NAVBAR (shared across all FitTrack pages — keep in sync)
+       ============================================================ -->
   <header class="navbar">
     <div class="container navbar__inner">
       <a href="index.html" class="navbar__brand">
@@ -26,6 +30,7 @@
         Fit<span class="navbar__brand-accent">Track</span>
       </a>
 
+      <!-- CSS-only mobile menu toggle (checkbox hack, no JS needed) -->
       <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox" />
       <label for="nav-toggle" class="navbar__toggle" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
@@ -42,10 +47,122 @@
   </header>
 
   <main>
-    <!-- TODO: Home page content goes here -->
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="hero__eyebrow">Your fitness, simplified</p>
+          <h1 class="hero__title">Fit<span class="text-accent">Track</span></h1>
+          <p class="hero__tagline">
+            Log workouts, explore exercises, and watch your progress grow —
+            one rep at a time.
+          </p>
+          <div class="hero__actions">
+            <a href="dailylog.html" class="btn btn--primary btn--lg">Start a Workout</a>
+            <a href="exercise.html" class="btn btn--ghost btn--lg">Browse Exercises</a>
+          </div>
+        </div>
+
+        <!-- Decorative illustration built with CSS (no image asset needed) -->
+        <div class="hero__art" aria-hidden="true">
+          <div class="hero__art-circle"></div>
+          <div class="hero__art-emoji">🏋️</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         QUICK ACTIONS
+         ============================================================ -->
+    <section class="section quick-actions" aria-labelledby="quick-actions-title">
+      <div class="container">
+        <h2 id="quick-actions-title" class="section__title">Jump right in</h2>
+        <p class="section__subtitle">Everything you need, one tap away.</p>
+
+        <div class="quick-actions__grid">
+          <a href="dailylog.html" class="action-card">
+            <span class="action-card__icon" aria-hidden="true">🔥</span>
+            <h3 class="action-card__title">Start Workout</h3>
+            <p class="action-card__text">Kick off today's session and log it live.</p>
+          </a>
+
+          <a href="exercise.html" class="action-card">
+            <span class="action-card__icon" aria-hidden="true">📚</span>
+            <h3 class="action-card__title">Exercise Library</h3>
+            <p class="action-card__text">Browse moves by muscle group with how-tos.</p>
+          </a>
+
+          <a href="bmi.html" class="action-card">
+            <span class="action-card__icon" aria-hidden="true">⚖️</span>
+            <h3 class="action-card__title">BMI Calculator</h3>
+            <p class="action-card__text">Check your body mass index in seconds.</p>
+          </a>
+
+          <a href="dailylog.html" class="action-card">
+            <span class="action-card__icon" aria-hidden="true">📝</span>
+            <h3 class="action-card__title">Daily Log</h3>
+            <p class="action-card__text">Review and edit everything you did today.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FEATURES
+         ============================================================ -->
+    <section class="section section--alt features" aria-labelledby="features-title">
+      <div class="container">
+        <h2 id="features-title" class="section__title">Why FitTrack?</h2>
+        <p class="section__subtitle">Built to keep you consistent, not overwhelmed.</p>
+
+        <div class="features__grid">
+          <article class="feature-card">
+            <span class="feature-card__icon" aria-hidden="true">🎯</span>
+            <h3 class="feature-card__title">Guided Exercise Library</h3>
+            <p class="feature-card__text">
+              12+ exercises with clear instructions and muscle-group filters,
+              so you always know what to do next.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-card__icon" aria-hidden="true">⏰</span>
+            <h3 class="feature-card__title">Workout Reminders</h3>
+            <p class="feature-card__text">
+              Set friendly nudges like "Leg Day — Tomorrow 6 PM" so you never
+              skip a session by accident.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-card__icon" aria-hidden="true">📊</span>
+            <h3 class="feature-card__title">Weekly Summaries</h3>
+            <p class="feature-card__text">
+              See your week at a glance — total workouts, streaks, and trends
+              that keep you motivated.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-card__icon" aria-hidden="true">💧</span>
+            <h3 class="feature-card__title">Simple Daily Logging</h3>
+            <p class="feature-card__text">
+              Log sets, reps, and how you felt in seconds. No clutter, no
+              friction — just progress.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- FOOTER — identical on every page -->
+  <!-- ============================================================
+       FOOTER (shared across all FitTrack pages — keep in sync)
+       ============================================================ -->
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">

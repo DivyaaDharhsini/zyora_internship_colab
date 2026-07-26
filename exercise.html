@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FitTrack Exercise Library — browse exercises by muscle group with step-by-step instructions." />
   <title>FitTrack | Exercise Library</title>
 
   <!-- Google Fonts: Poppins (headings) + Inter (body) -->
@@ -13,12 +14,15 @@
     rel="stylesheet"
   />
 
-  <!-- Shared design system (navbar, footer, buttons, tokens) -->
+  <!-- Shared design system first, then page-specific styles -->
   <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/exercise.css" />
 </head>
 <body>
 
-  <!-- NAVBAR — identical on every page; move navbar__link--active to the current page's link -->
+  <!-- ============================================================
+       NAVBAR (shared across all FitTrack pages — keep in sync)
+       ============================================================ -->
   <header class="navbar">
     <div class="container navbar__inner">
       <a href="index.html" class="navbar__brand">
@@ -26,6 +30,7 @@
         Fit<span class="navbar__brand-accent">Track</span>
       </a>
 
+      <!-- CSS-only mobile menu toggle (checkbox hack, no JS needed) -->
       <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox" />
       <label for="nav-toggle" class="navbar__toggle" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
@@ -42,10 +47,124 @@
   </header>
 
   <main>
-    <!-- TODO: Exercise Library content goes here -->
+
+    <!-- ============================================================
+         PAGE HEADER
+         ============================================================ -->
+    <section class="page-header">
+      <div class="container">
+        <h1 class="page-header__title">Exercise Library</h1>
+        <p class="page-header__intro">
+          Find the right move for every muscle. Search by name, filter by
+          muscle group, and click any card for full instructions.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEARCH + FILTERS
+         ============================================================ -->
+    <section class="toolbar section" aria-label="Search and filter exercises">
+      <div class="container">
+        <div class="toolbar__search">
+          <span class="toolbar__search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="search-input"
+            class="toolbar__input"
+            placeholder="Search exercises by name…"
+            aria-label="Search exercises by name"
+          />
+        </div>
+
+        <!-- Filter buttons are rendered active/inactive by js/exercise.js -->
+        <div class="toolbar__filters" id="filter-buttons" role="group" aria-label="Filter by muscle group">
+          <button class="filter-btn filter-btn--active" data-group="All">All</button>
+          <button class="filter-btn" data-group="Chest">Chest</button>
+          <button class="filter-btn" data-group="Back">Back</button>
+          <button class="filter-btn" data-group="Legs">Legs</button>
+          <button class="filter-btn" data-group="Arms">Arms</button>
+          <button class="filter-btn" data-group="Core">Core</button>
+          <button class="filter-btn" data-group="Full Body">Full Body</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EXERCISE GRID (cards injected by js/exercise.js)
+         ============================================================ -->
+    <section class="section section--flush" aria-label="Exercise results">
+      <div class="container">
+        <div class="exercise-grid" id="exercise-grid"><!-- JS renders cards here --></div>
+
+        <!-- Empty state: shown by JS when no exercises match -->
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-state__icon" aria-hidden="true">🤷</span>
+          <h2 class="empty-state__title">No exercises found</h2>
+          <p class="empty-state__text">
+            Try a different search term or reset the muscle-group filter.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WORKOUT REMINDERS (frontend-only widget)
+         ============================================================ -->
+    <section class="section section--alt reminders" aria-labelledby="reminders-title">
+      <div class="container">
+        <h2 id="reminders-title" class="section__title">Workout Reminders</h2>
+        <p class="section__subtitle">
+          Plan your next sessions. Reminders live in this session only (no backend yet).
+        </p>
+
+        <!-- Add-reminder form -->
+        <form class="reminders__form" id="reminder-form">
+          <input
+            type="text"
+            id="reminder-title"
+            class="reminders__input"
+            placeholder="e.g. Leg Day"
+            aria-label="Reminder title"
+            required
+          />
+          <input
+            type="text"
+            id="reminder-when"
+            class="reminders__input"
+            placeholder="e.g. Tomorrow 6 PM"
+            aria-label="Reminder time"
+            required
+          />
+          <button type="submit" class="btn btn--primary">+ Add Reminder</button>
+        </form>
+
+        <!-- Reminder cards injected by js/exercise.js -->
+        <div class="reminders__grid" id="reminders-grid"></div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- FOOTER — identical on every page -->
+  <!-- ============================================================
+       EXERCISE DETAIL MODAL (populated + toggled by js/exercise.js)
+       ============================================================ -->
+  <div class="modal" id="exercise-modal" hidden>
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal__close" data-modal-close aria-label="Close exercise details">&times;</button>
+      <div class="modal__media" id="modal-media"><!-- image / placeholder --></div>
+      <div class="modal__body">
+        <span class="tag" id="modal-tag"></span>
+        <h2 class="modal__title" id="modal-title"></h2>
+        <p class="modal__instructions" id="modal-instructions"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FOOTER (shared across all FitTrack pages — keep in sync)
+       ============================================================ -->
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
@@ -62,5 +181,6 @@
     </div>
   </footer>
 
+  <script src="js/exercise.js"></script>
 </body>
 </html>
