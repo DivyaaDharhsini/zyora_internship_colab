@@ -1,0 +1,405 @@
+/* ==========================================================================
+   FitTrack — shared.css
+   The single source of truth for the FitTrack design system, used by EVERY
+   page (Home, Exercise Library, BMI Calculator, Daily Log, Weekly Summary).
+
+   HOW TO USE (for all teammates):
+   1. Link this file FIRST in your page's <head>, then your page stylesheet:
+        <link rel="stylesheet" href="css/shared.css" />
+        <link rel="stylesheet" href="css/yourpage.css" />
+   2. Copy the navbar + footer HTML from index.html / exercise.html and set
+      the `navbar__link--active` class on your own page's nav link.
+   3. Put ONLY page-specific styles in your own CSS file — shared styles
+      (colors, fonts, navbar, buttons, footer) belong here.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
+:root {
+  /* Palette — deep teal primary, warm amber accent, soft neutrals */
+  --clr-primary: #0e7a6a;
+  --clr-primary-dark: #0a5a4e;
+  --clr-primary-light: #e6f4f1;
+  --clr-accent: #f59e0b;
+  --clr-dark: #12221f;
+  --clr-text: #24332f;
+  --clr-text-muted: #5f6f6a;
+  --clr-bg: #f7faf9;
+  --clr-surface: #ffffff;
+  --clr-border: #dfe8e5;
+
+  /* Typography */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Spacing scale (multiples of 4px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Misc */
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(18, 34, 31, 0.08);
+  --shadow-md: 0 8px 24px rgba(18, 34, 31, 0.12);
+  --transition: 0.25s ease;
+}
+
+/* ==========================================================================
+   2. RESET + BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--clr-text);
+  background-color: var(--clr-bg);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  color: var(--clr-dark);
+}
+
+.container {
+  width: min(1120px, 100% - 2rem);
+  margin-inline: auto;
+}
+
+.text-accent {
+  color: var(--clr-accent);
+}
+
+/* ==========================================================================
+   3. BUTTONS
+   ========================================================================== */
+.btn {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.7em 1.6em;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition), box-shadow var(--transition);
+}
+
+.btn--primary {
+  background-color: var(--clr-primary);
+  color: #fff;
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background-color: var(--clr-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--clr-primary);
+  border-color: var(--clr-primary);
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  background-color: var(--clr-primary-light);
+  transform: translateY(-2px);
+}
+
+.btn--lg {
+  font-size: 1.05rem;
+  padding: 0.85em 2em;
+}
+
+/* ==========================================================================
+   4. NAVBAR (with CSS-only mobile toggle)
+   ========================================================================== */
+.navbar {
+  background-color: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 64px;
+  gap: var(--space-4);
+}
+
+.navbar__brand {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--clr-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navbar__logo {
+  color: var(--clr-accent);
+}
+
+.navbar__brand-accent {
+  color: var(--clr-primary);
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navbar__link {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--clr-text-muted);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  transition: color var(--transition), background-color var(--transition);
+}
+
+.navbar__link:hover,
+.navbar__link:focus-visible {
+  color: var(--clr-primary);
+  background-color: var(--clr-primary-light);
+}
+
+.navbar__link--active {
+  color: var(--clr-primary);
+  font-weight: 600;
+}
+
+/* Hamburger toggle — hidden on desktop */
+.navbar__toggle-checkbox {
+  display: none;
+}
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+.navbar__toggle span {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--clr-dark);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+/* ==========================================================================
+   5. SECTIONS + FOOTER
+   ========================================================================== */
+.section {
+  padding-block: var(--space-16);
+}
+
+.section--alt {
+  background-color: var(--clr-surface);
+}
+
+.section__title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  text-align: center;
+}
+
+.section__subtitle {
+  text-align: center;
+  color: var(--clr-text-muted);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-12);
+}
+
+.footer {
+  background-color: var(--clr-dark);
+  color: #cfe0db;
+  padding-block: var(--space-12);
+  margin-top: auto;
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.footer__brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
+}
+
+.footer__links a {
+  font-size: 0.9rem;
+  transition: color var(--transition);
+}
+
+.footer__links a:hover {
+  color: var(--clr-accent);
+}
+
+.footer__copy {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   6. SHARED RESPONSIVE RULES — mobile (≤ 640px): hamburger nav
+   ========================================================================== */
+@media (max-width: 640px) {
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__links {
+    /* Collapsed by default; expands when the checkbox is checked */
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding-bottom: var(--space-4);
+  }
+
+  .navbar__toggle-checkbox:checked ~ .navbar__links {
+    display: flex;
+  }
+
+  .section {
+    padding-block: var(--space-12);
+  }
+}
+/* ==========================================================================
+   7. BMI CALCULATOR & FORM ADDITIONS
+   ========================================================================== */
+.card {
+  background-color: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  max-width: 500px;
+  margin: var(--space-8) auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  width: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.bmi-result {
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  background-color: var(--clr-primary-light);
+  border-radius: var(--radius);
+  text-align: center;
+  border: 1px solid var(--clr-border);
+}
+
+.status-text {
+  margin-block: var(--space-2) var(--space-4);
+}
+
+.bmi-scale {
+  position: relative;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(
+    to right, 
+    #f59e0b 0% 25%, 
+    #0e7a6a 25% 50%, 
+    #f59e0b 50% 75%, 
+    #ef4444 75% 100%
+  );
+  margin-top: var(--space-4);
+}
+
+.bmi-pointer {
+  position: absolute;
+  top: -4px;
+  width: 20px;
+  height: 20px;
+  background-color: var(--clr-dark);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  transition: left 0.4s ease-in-out;
+}
+
+.bmi-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  margin-top: var(--space-2);
+}
