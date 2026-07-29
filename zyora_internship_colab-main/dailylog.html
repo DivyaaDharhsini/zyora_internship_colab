@@ -13,12 +13,12 @@
     rel="stylesheet"
   />
 
-  <!-- Shared design system (navbar, footer, buttons, tokens) -->
+  <!-- Shared design system -->
   <link rel="stylesheet" href="css/shared.css" />
 </head>
 <body>
 
-  <!-- NAVBAR — identical on every page; move navbar__link--active to the current page's link -->
+  <!-- NAVBAR -->
   <header class="navbar">
     <div class="container navbar__inner">
       <a href="index.html" class="navbar__brand">
@@ -41,11 +41,89 @@
     </div>
   </header>
 
-  <main>
-    <!-- TODO: Daily Log content goes here (owner: Sindhu) -->
+  <!-- MAIN CONTENT (REPLACED HERE) -->
+  <main class="main-content">
+    <section class="page-header">
+      <div class="container">
+        <h1 class="page-title">Daily Activity Log</h1>
+        <p class="page-subtitle">Track your workouts, water intake, and daily energy levels.</p>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div class="log-grid">
+        
+        <!-- FORM COLUMN -->
+        <div class="card log-card">
+          <h2 class="card__title">Add Today's Entry</h2>
+          <form id="dailyLogForm" class="form">
+            
+            <div class="form-group">
+              <label for="logDate" class="form-label">Date</label>
+              <input type="date" id="logDate" class="form-input" required />
+            </div>
+
+            <div class="form-group">
+              <label for="workoutType" class="form-label">Activity / Workout</label>
+              <select id="workoutType" class="form-select" required>
+                <option value="" disabled selected>Select an activity</option>
+                <option value="Running">Running</option>
+                <option value="Cycling">Cycling</option>
+                <option value="Strength Training">Strength Training</option>
+                <option value="Yoga">Yoga / Stretching</option>
+                <option value="Walking">Walking</option>
+                <option value="Swimming">Swimming</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="duration" class="form-label">Duration (mins)</label>
+                <input type="number" id="duration" class="form-input" min="1" placeholder="30" required />
+              </div>
+
+              <div class="form-group">
+                <label for="calories" class="form-label">Calories Burned</label>
+                <input type="number" id="calories" class="form-input" min="0" placeholder="250" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="waterIntake" class="form-label">Water Intake (Liters)</label>
+              <input type="number" id="waterIntake" class="form-input" step="0.1" min="0" placeholder="2.5" required />
+            </div>
+
+            <div class="form-group">
+              <label for="notes" class="form-label">Notes / How you felt</label>
+              <textarea id="notes" class="form-textarea" rows="3" placeholder="Felt energetic! High intensity session."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--full">Save Daily Log</button>
+          </form>
+        </div>
+
+        <!-- HISTORY COLUMN -->
+        <div class="card history-card">
+          <div class="history-header">
+            <h2 class="card__title">Recent Entries</h2>
+            <button id="clearLogsBtn" class="btn btn--outline btn--sm">Clear All</button>
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyState" class="empty-state">
+            <p>No entries logged yet. Fill out the form to record your daily progress!</p>
+          </div>
+
+          <!-- Entries List -->
+          <div id="logList" class="log-list"></div>
+        </div>
+
+      </div>
+    </section>
   </main>
 
-  <!-- FOOTER — identical on every page -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
@@ -61,6 +139,9 @@
       <p class="footer__copy">&copy; 2026 FitTrack. Built by Team FitTrack.</p>
     </div>
   </footer>
+
+  <!-- SCRIPT LINK ADDED HERE (RIGHT BEFORE </body>) -->
+  <script src="js/dailylog.js"></script>
 
 </body>
 </html>
