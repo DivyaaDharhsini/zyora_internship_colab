@@ -41,8 +41,85 @@
     </div>
   </header>
 
-  <main>
-    <!-- TODO: Weekly Summary content goes here (owner: Sindhu) -->
+  <main class="main-content">
+
+    <!-- PAGE HERO -->
+    <section class="page-header">
+      <div class="container">
+        <h1 class="page-title">Weekly Summary</h1>
+        <p class="page-subtitle">Your aggregated fitness stats from the Daily Log.</p>
+      </div>
+    </section>
+
+    <section class="container section">
+
+      <!-- Period tabs -->
+      <div class="tab-bar" id="period-tabs" aria-label="Select time period">
+        <button class="tab-btn tab-btn--active" data-period="7">Last 7 days</button>
+        <button class="tab-btn" data-period="14">Last 14 days</button>
+        <button class="tab-btn" data-period="30">Last 30 days</button>
+        <button class="tab-btn" data-period="all">All time</button>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__icon">🏋️</div>
+          <div class="stat-card__value" id="stat-sessions">—</div>
+          <div class="stat-card__label">Sessions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">⏱</div>
+          <div class="stat-card__value" id="stat-duration">—</div>
+          <div class="stat-card__label">Total Minutes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">🔥</div>
+          <div class="stat-card__value" id="stat-calories">—</div>
+          <div class="stat-card__label">Calories Burned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">💧</div>
+          <div class="stat-card__value" id="stat-water">—</div>
+          <div class="stat-card__label">Liters of Water</div>
+        </div>
+      </div>
+
+      <!-- Bar chart: calories per day -->
+      <div class="card" style="max-width:100%;">
+        <h2 class="card__title">Calories Burned — Daily Breakdown</h2>
+        <div class="bar-chart" id="bar-chart" aria-label="Calories per day bar chart"></div>
+        <div id="chart-empty" class="empty-state" style="display:none;">
+          <div class="empty-state__icon">📊</div>
+          <p>No data yet — log some workouts to see your chart!</p>
+        </div>
+      </div>
+
+      <!-- Entries table -->
+      <div class="card" style="max-width:100%;margin-top:var(--space-8);">
+        <h2 class="card__title">All Entries in Period</h2>
+        <div id="table-empty" class="empty-state" style="display:none;">
+          <div class="empty-state__icon">📋</div>
+          <p>No entries found. Start logging in the <a href="dailylog.html" style="color:var(--clr-primary);font-weight:600;">Daily Log</a>!</p>
+        </div>
+        <div class="log-table-wrap" id="table-wrap">
+          <table class="log-table" id="log-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Activity</th>
+                <th>Duration</th>
+                <th>Calories</th>
+                <th>Water</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="log-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
   </main>
 
   <!-- FOOTER — identical on every page -->
@@ -62,5 +139,7 @@
     </div>
   </footer>
 
+  <script src="js/shared.js"></script>
+  <script src="js/summary.js"></script>
 </body>
 </html>
