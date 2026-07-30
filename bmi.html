@@ -40,11 +40,46 @@
       </nav>
     </div>
   </header>
+<main class="section">
+  <div class="container">
+    <section class="card">
+      <h1 class="section__title">BMI Calculator</h1>
+      <p class="section__subtitle">Check your Body Mass Index</p>
 
-  <main>
-    <!-- TODO: BMI Calculator content goes here (owner: Sindhu) -->
-  </main>
+      <div class="bmi-form">
+        <div class="form-group">
+          <label for="height">Height (cm)</label>
+          <input type="number" id="height" placeholder="Enter height in cm" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="weight">Weight (kg)</label>
+          <input type="number" id="weight" placeholder="Enter weight in kg" required>
+        </div>
+        
+        <!-- Crucial: type="button" prevents page refresh -->
+        <button type="button" class="btn btn--primary" onclick="calculateBMI()">Calculate BMI</button>
+      </div>
 
+      <!-- Result Box with Status Bar -->
+      <div id="bmi-result" class="bmi-result hidden">
+        <h2>Your BMI: <span id="bmi-value">--</span></h2>
+        <p class="status-text">Status: <strong id="bmi-category">--</strong></p>
+
+        <!-- Visual Status Bar Track -->
+        <div class="bmi-scale">
+          <div id="bmi-pointer" class="bmi-pointer"></div>
+        </div>
+        <div class="bmi-scale-labels">
+          <span>Underweight</span>
+          <span>Normal</span>
+          <span>Overweight</span>
+          <span>Obese</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
   <!-- FOOTER — identical on every page -->
   <footer class="footer">
     <div class="container footer__inner">
@@ -61,6 +96,6 @@
       <p class="footer__copy">&copy; 2026 FitTrack. Built by Team FitTrack.</p>
     </div>
   </footer>
-
+<script src="js/bmi.js"></script>
 </body>
 </html>

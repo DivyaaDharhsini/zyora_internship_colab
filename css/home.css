@@ -1,0 +1,185 @@
+/* ==========================================================================
+   FitTrack — home.css
+   Page-specific styles for index.html (Home Page).
+   The shared design system (tokens, reset, navbar, buttons, footer) lives
+   in css/shared.css — link it BEFORE this file in the HTML <head>.
+   ========================================================================== */
+
+/* ==========================================================================
+   PAGE: hero
+   ========================================================================== */
+.hero {
+  background: linear-gradient(135deg, var(--clr-primary-light) 0%, var(--clr-bg) 60%);
+  padding-block: var(--space-16);
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.hero__eyebrow {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: var(--clr-primary);
+  margin-bottom: var(--space-2);
+}
+
+.hero__title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+}
+
+.hero__tagline {
+  font-size: 1.15rem;
+  color: var(--clr-text-muted);
+  max-width: 32rem;
+  margin-block: var(--space-4) var(--space-8);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+/* Decorative CSS illustration (avoids needing an image asset) */
+.hero__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+}
+
+.hero__art-circle {
+  position: absolute;
+  width: clamp(200px, 24vw, 300px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--clr-primary), var(--clr-primary-dark));
+  box-shadow: var(--shadow-md);
+}
+
+.hero__art-emoji {
+  position: relative;
+  font-size: clamp(5rem, 10vw, 8rem);
+  filter: drop-shadow(0 8px 12px rgba(18, 34, 31, 0.25));
+}
+
+/* ==========================================================================
+   PAGE: quick action cards
+   ========================================================================== */
+.quick-actions__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.action-card {
+  background-color: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.action-card:hover,
+.action-card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--clr-primary);
+}
+
+.action-card__icon {
+  font-size: 2.2rem;
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+
+.action-card__title {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-2);
+}
+
+.action-card__text {
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+}
+
+/* ==========================================================================
+   PAGE: feature cards
+   ========================================================================== */
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.feature-card {
+  background-color: var(--clr-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-6);
+  border-top: 4px solid var(--clr-primary);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.feature-card__icon {
+  font-size: 1.8rem;
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+
+.feature-card__title {
+  font-size: 1.05rem;
+  margin-bottom: var(--space-2);
+}
+
+.feature-card__text {
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+}
+
+/* ==========================================================================
+   RESPONSIVE: tablet (≤ 900px)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .quick-actions__grid,
+  .features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero__tagline {
+    margin-inline: auto;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE: mobile (≤ 640px) — single column
+   ========================================================================== */
+@media (max-width: 640px) {
+  .quick-actions__grid,
+  .features__grid {
+    grid-template-columns: 1fr;
+  }
+}
