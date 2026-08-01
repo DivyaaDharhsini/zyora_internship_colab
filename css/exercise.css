@@ -392,6 +392,54 @@ body.modal-open {
 }
 
 /* ==========================================================================
+   LIVE API SECTION (Discover More — wger API)
+   ========================================================================== */
+.api-section .section__subtitle a {
+  color: var(--clr-primary);
+  font-weight: 600;
+}
+
+/* Status box: shows the spinner while loading, or the error message */
+.api-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-12) var(--space-4);
+  text-align: center;
+  color: var(--clr-text-muted);
+}
+
+/* display:flex above would override the hidden attribute without this */
+.api-status[hidden] {
+  display: none;
+}
+
+.api-status--error {
+  color: var(--clr-text);
+}
+
+.api-status__icon {
+  font-size: 2.5rem;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid var(--clr-primary-light);
+  border-top-color: var(--clr-primary);
+  animation: spinner-turn 0.8s linear infinite;
+}
+
+@keyframes spinner-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
    RESPONSIVE: tablet (≤ 900px)
    ========================================================================== */
 @media (max-width: 900px) {

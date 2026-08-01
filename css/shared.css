@@ -462,6 +462,11 @@ h1, h2, h3 {
   margin-top: var(--space-4);
 }
 
+/* display:flex above would override the hidden attribute without this */
+.form-success[hidden] {
+  display: none;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
