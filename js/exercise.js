@@ -1,8 +1,9 @@
 /* ==========================================================================
    FitTrack — exercise.js
    Powers exercise.html: exercise data, card rendering, live search,
-   muscle-group filtering, detail modal, and the workout-reminders widget.
-   Frontend-only: all state lives in memory (no backend / persistence yet).
+   muscle-group filtering, detail modal, live “Discover More” cards fetched
+   from the wger API (loading → success → error states), and the workout-
+   reminders widget persisted in localStorage.
    ========================================================================== */
 
 "use strict";
@@ -242,6 +243,9 @@ const reminderTitleInput = document.getElementById("reminder-title");
 const reminderWhenInput = document.getElementById("reminder-when");
 const remindersGrid = document.getElementById("reminders-grid");
 
+const apiStatus = document.getElementById("api-status");
+const apiGrid = document.getElementById("api-grid");
+
 /* ==========================================================================
    4. EXERCISE RENDERING
    ========================================================================== */
@@ -260,17 +264,54 @@ function getVisibleExercises() {
  * Build media markup: emoji placeholder sits behind an <img>. If the image
  * file is missing/unreachable, the <img> removes itself and the placeholder
  * shows instead — so cards look fine before real photos are added.
+ * API exercises have no image, so they get the emoji only.
  */
 function buildMediaHTML(exercise) {
-  return `
-    <span aria-hidden="true">${exercise.emoji}</span>
-    <img
-      src="${exercise.image}"
-      alt="${exercise.name} demonstration"
-      loading="lazy"
-      onerror="this.remove()"
-    />
+  const img = exercise.image
+    ? `<img
+        src="${exercise.image}"
+        alt="${exercise.name} demonstration"
+        loading="lazy"
+        onerror="this.remove()"
+      />`
+    : "";
+  return `<span aria-hidden="true">${exercise.emoji}</span>${img}`;
+}
+
+/**
+ * Build one exercise card. Used by both the local library grid and the
+ * wger API grid. Text is set via textContent so API data can never inject
+ * HTML into the page.
+ */
+function buildExerciseCard(exercise) {
+  const card = document.createElement("article");
+  card.className = "exercise-card";
+  card.tabIndex = 0; // keyboard focusable
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-label", `View details for ${exercise.name}`);
+  card.innerHTML = `
+    <div class="exercise-card__media">${buildMediaHTML(exercise)}</div>
+    <div class="exercise-card__body">
+      <span class="tag"></span>
+      <h3 class="exercise-card__name"></h3>
+      <p class="exercise-card__instructions"></p>
+    </div>
   `;
+  card.querySelector(".tag").textContent = exercise.muscleGroup;
+  card.querySelector(".exercise-card__name").textContent = exercise.name;
+  card.querySelector(".exercise-card__instructions").textContent =
+    exercise.instructions;
+
+  // Open the detail modal on click or Enter/Space
+  card.addEventListener("click", () => openModal(exercise));
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openModal(exercise);
+    }
+  });
+
+  return card;
 }
 
 /** Render exercise cards for the current search/filter state. */
@@ -282,30 +323,7 @@ function renderExercises() {
   grid.innerHTML = "";
 
   visible.forEach((exercise) => {
-    const card = document.createElement("article");
-    card.className = "exercise-card";
-    card.tabIndex = 0; // keyboard focusable
-    card.setAttribute("role", "button");
-    card.setAttribute("aria-label", `View details for ${exercise.name}`);
-    card.innerHTML = `
-      <div class="exercise-card__media">${buildMediaHTML(exercise)}</div>
-      <div class="exercise-card__body">
-        <span class="tag">${exercise.muscleGroup}</span>
-        <h3 class="exercise-card__name">${exercise.name}</h3>
-        <p class="exercise-card__instructions">${exercise.instructions}</p>
-      </div>
-    `;
-
-    // Open the detail modal on click or Enter/Space
-    card.addEventListener("click", () => openModal(exercise));
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openModal(exercise);
-      }
-    });
-
-    grid.appendChild(card);
+    grid.appendChild(buildExerciseCard(exercise));
   });
 }
 
@@ -367,8 +385,124 @@ document.addEventListener("keydown", (event) => {
 });
 
 /* ==========================================================================
-   7. WORKOUT REMINDERS (in-memory only)
+   7. LIVE DATA — “Discover More” exercises from the wger API
+   --------------------------------------------------------------------------
+   Handles all three fetch states:
+   • loading → spinner in #api-status
+   • success → cards rendered into #api-grid
+   • error   → friendly message + “Try Again” button (e.g. when offline)
    ========================================================================== */
+
+const WGER_URL = "https://wger.de/api/v2/exerciseinfo/?language=2&limit=8";
+const API_EMOJIS = ["🏅", "🤸", "🏋️", "🧗", "🚴", "⚡", "🎯", "🥇"];
+
+/** Strip HTML tags from API descriptions using an inert parsed document. */
+function stripHtml(html) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return (doc.body.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+/** Map one wger API result to our exercise shape (or null if unusable). */
+function parseApiExercise(result, index) {
+  const translations = result.translations || [];
+  const english =
+    translations.find((t) => t.language === 2 && t.name) ||
+    translations.find((t) => t.name);
+  if (!english) return null;
+
+  return {
+    id: `api-${result.id}`,
+    name: english.name,
+    muscleGroup: (result.category && result.category.name) || "General",
+    emoji: API_EMOJIS[index % API_EMOJIS.length],
+    image: null, // no photo → emoji placeholder is used
+    instructions:
+      stripHtml(english.description || "") ||
+      "No description provided — see wger.de for details.",
+  };
+}
+
+/** Show the loading spinner in the status box. */
+function showApiLoading() {
+  apiGrid.innerHTML = "";
+  apiStatus.hidden = false;
+  apiStatus.classList.remove("api-status--error");
+  apiStatus.innerHTML = `
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading exercises…</p>
+  `;
+}
+
+/** Show a friendly error message with a retry button. */
+function showApiError() {
+  apiStatus.hidden = false;
+  apiStatus.classList.add("api-status--error");
+  apiStatus.innerHTML = `
+    <span class="api-status__icon" aria-hidden="true">📡</span>
+    <p>Couldn't load exercises right now. Check your internet connection and try again.</p>
+    <button type="button" class="btn btn--primary" id="api-retry">Try Again</button>
+  `;
+  document
+    .getElementById("api-retry")
+    .addEventListener("click", loadApiExercises);
+}
+
+/** Fetch exercises from wger and render them (loading → success/error). */
+async function loadApiExercises() {
+  showApiLoading();
+
+  try {
+    const response = await fetch(WGER_URL);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    const exercises = (data.results || [])
+      .map(parseApiExercise)
+      .filter(Boolean);
+    if (exercises.length === 0) throw new Error("API returned no exercises");
+
+    apiStatus.hidden = true;
+    apiGrid.innerHTML = "";
+    exercises.forEach((exercise) => {
+      apiGrid.appendChild(buildExerciseCard(exercise));
+    });
+  } catch (error) {
+    console.error("wger API fetch failed:", error);
+    showApiError();
+  }
+}
+
+/* ==========================================================================
+   8. WORKOUT REMINDERS (persisted in localStorage)
+   ========================================================================== */
+
+const REMINDERS_KEY = "fitTrackReminders";
+
+/** Restore saved reminders (if any) into state. Falls back to the seeds. */
+function loadReminders() {
+  try {
+    const raw = localStorage.getItem(REMINDERS_KEY);
+    if (!raw) return; // first visit → keep seed reminders
+
+    const saved = JSON.parse(raw);
+    if (!Array.isArray(saved)) return;
+
+    state.reminders = saved;
+    state.nextReminderId =
+      saved.reduce((max, r) => Math.max(max, r.id), 0) + 1;
+  } catch (error) {
+    console.warn("Could not read saved reminders — using defaults.", error);
+  }
+}
+
+/** Persist the current reminders to localStorage. */
+function saveReminders() {
+  try {
+    localStorage.setItem(REMINDERS_KEY, JSON.stringify(state.reminders));
+  } catch (error) {
+    console.warn("Could not save reminders.", error);
+  }
+}
 
 /** Render all reminder cards from state (or an empty message). */
 function renderReminders() {
@@ -406,12 +540,14 @@ function renderReminders() {
 /** Add a reminder from the form inputs. */
 function addReminder(title, when) {
   state.reminders.push({ id: state.nextReminderId++, title, when });
+  saveReminders();
   renderReminders();
 }
 
 /** Remove a reminder by id. */
 function removeReminder(id) {
   state.reminders = state.reminders.filter((r) => r.id !== id);
+  saveReminders();
   renderReminders();
 }
 
@@ -429,7 +565,9 @@ reminderForm.addEventListener("submit", (event) => {
 });
 
 /* ==========================================================================
-   8. INITIAL RENDER
+   9. INITIAL RENDER
    ========================================================================== */
 renderExercises();
+loadReminders();
 renderReminders();
+loadApiExercises();

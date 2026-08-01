@@ -40,46 +40,110 @@
       </nav>
     </div>
   </header>
-<main class="section">
-  <div class="container">
-    <section class="card">
-      <h1 class="section__title">BMI Calculator</h1>
-      <p class="section__subtitle">Check your Body Mass Index</p>
 
-      <div class="bmi-form">
-        <div class="form-group">
-          <label for="height">Height (cm)</label>
-          <input type="number" id="height" placeholder="Enter height in cm" required>
+  <main class="main-content">
+
+    <!-- PAGE HERO -->
+    <section class="page-header">
+      <div class="container">
+        <h1 class="page-title">BMI Calculator</h1>
+        <p class="page-subtitle">Enter your height and weight to find your Body Mass Index. Your last measurement is saved in your browser.</p>
+      </div>
+    </section>
+
+    <!-- CALCULATOR CARD -->
+    <section class="container section">
+      <div class="card">
+        <h2 class="card__title">Calculate Your BMI</h2>
+
+        <form id="bmi-form" novalidate>
+
+          <div class="form-group">
+            <label class="form-label" for="height">Height (cm)</label>
+            <input
+              type="number"
+              id="height"
+              class="form-input"
+              placeholder="e.g. 170"
+              min="50"
+              max="300"
+              autocomplete="off"
+            />
+            <span class="form-error" id="height-error" aria-live="polite"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="weight">Weight (kg)</label>
+            <input
+              type="number"
+              id="weight"
+              class="form-input"
+              placeholder="e.g. 68"
+              min="1"
+              max="500"
+              autocomplete="off"
+            />
+            <span class="form-error" id="weight-error" aria-live="polite"></span>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full">Calculate BMI</button>
+        </form>
+
+        <!-- RESULT — hidden until form submitted -->
+        <div id="bmi-result" class="bmi-result hidden" aria-live="polite">
+          <p class="status-text">Your BMI is</p>
+          <p id="bmi-value" style="font-size:2.4rem;font-weight:700;font-family:var(--font-heading);color:var(--clr-dark);line-height:1;">—</p>
+          <p id="bmi-category" style="font-size:1.1rem;font-weight:600;margin-top:0.5rem;"></p>
+          <p id="bmi-tip" style="font-size:0.88rem;color:var(--clr-text-muted);margin-top:0.5rem;"></p>
+
+          <div class="bmi-scale" style="margin-top:1.5rem;">
+            <div id="bmi-pointer" class="bmi-pointer" style="left:0%;"></div>
+          </div>
+          <div class="bmi-scale-labels">
+            <span>Underweight<br/>&lt;18.5</span>
+            <span>Normal<br/>18.5–24.9</span>
+            <span>Overweight<br/>25–29.9</span>
+            <span>Obese<br/>≥30</span>
+          </div>
+
+          <button
+            id="bmi-reset"
+            class="btn btn--outline"
+            style="margin-top:1.5rem;"
+            type="button"
+          >
+            Recalculate
+          </button>
         </div>
-        
-        <div class="form-group">
-          <label for="weight">Weight (kg)</label>
-          <input type="number" id="weight" placeholder="Enter weight in kg" required>
-        </div>
-        
-        <!-- Crucial: type="button" prevents page refresh -->
-        <button type="button" class="btn btn--primary" onclick="calculateBMI()">Calculate BMI</button>
       </div>
 
-      <!-- Result Box with Status Bar -->
-      <div id="bmi-result" class="bmi-result hidden">
-        <h2>Your BMI: <span id="bmi-value">--</span></h2>
-        <p class="status-text">Status: <strong id="bmi-category">--</strong></p>
-
-        <!-- Visual Status Bar Track -->
-        <div class="bmi-scale">
-          <div id="bmi-pointer" class="bmi-pointer"></div>
+      <!-- INFO CARDS -->
+      <div class="stat-grid" style="max-width:700px;margin:0 auto;">
+        <div class="stat-card">
+          <div class="stat-card__icon">🟡</div>
+          <div class="stat-card__value" style="font-size:1.1rem;">&lt; 18.5</div>
+          <div class="stat-card__label">Underweight</div>
         </div>
-        <div class="bmi-scale-labels">
-          <span>Underweight</span>
-          <span>Normal</span>
-          <span>Overweight</span>
-          <span>Obese</span>
+        <div class="stat-card">
+          <div class="stat-card__icon">🟢</div>
+          <div class="stat-card__value" style="font-size:1.1rem;">18.5 – 24.9</div>
+          <div class="stat-card__label">Normal Weight</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">🟠</div>
+          <div class="stat-card__value" style="font-size:1.1rem;">25 – 29.9</div>
+          <div class="stat-card__label">Overweight</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">🔴</div>
+          <div class="stat-card__value" style="font-size:1.1rem;">≥ 30</div>
+          <div class="stat-card__label">Obese</div>
         </div>
       </div>
     </section>
-  </div>
-</main>
+
+  </main>
+
   <!-- FOOTER — identical on every page -->
   <footer class="footer">
     <div class="container footer__inner">
@@ -96,6 +160,8 @@
       <p class="footer__copy">&copy; 2026 FitTrack. Built by Team FitTrack.</p>
     </div>
   </footer>
-<script src="js/bmi.js"></script>
+
+  <script src="js/shared.js"></script>
+  <script src="js/bmi.js"></script>
 </body>
 </html>

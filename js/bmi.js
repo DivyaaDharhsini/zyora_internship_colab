@@ -1,6 +1,7 @@
 /* ==========================================================================
    FitTrack — bmi.js
-   Powers bmi.html: form validation, BMI calculation, result display.
+   Powers bmi.html: form validation, BMI calculation, result display, and
+   localStorage persistence of the last measurement (restored on page load).
    ========================================================================== */
 "use strict";
 
@@ -66,10 +67,11 @@ form.addEventListener("submit", (e) => {
   const wOk = validateWeight();
   if (!hOk || !wOk) return;
   calculateBMI();
+  saveLastMeasurement();
 });
 
 /* ---- BMI calculation + display ---- */
-function calculateBMI() {
+function calculateBMI(scrollToResult = true) {
   const height = parseFloat(heightInput.value);
   const weight = parseFloat(weightInput.value);
   const heightM = height / 100;
@@ -107,7 +109,9 @@ function calculateBMI() {
 
   resultBox.classList.remove("hidden");
   resultBox.style.display = "block";
-  resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  if (scrollToResult) {
+    resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
 }
 
 /* ---- Reset ---- */
@@ -116,4 +120,40 @@ resetBtn.addEventListener("click", () => {
   clearError(heightInput, heightError);
   clearError(weightInput, weightError);
   resultBox.classList.add("hidden");
+  localStorage.removeItem(BMI_KEY);
 });
+
+/* ==========================================================================
+   localStorage — remember the last measurement across refreshes
+   ========================================================================== */
+const BMI_KEY = "fitTrackBmi";
+
+function saveLastMeasurement() {
+  try {
+    localStorage.setItem(
+      BMI_KEY,
+      JSON.stringify({
+        height: heightInput.value,
+        weight: weightInput.value,
+        savedAt: new Date().toISOString(),
+      })
+    );
+  } catch (error) {
+    console.warn("Could not save BMI measurement.", error);
+  }
+}
+
+/** On load: restore the last measurement and re-show the result. */
+(function restoreLastMeasurement() {
+  try {
+    const raw = localStorage.getItem(BMI_KEY);
+    if (!raw) return;
+
+    const saved = JSON.parse(raw);
+    heightInput.value = saved.height || "";
+    weightInput.value = saved.weight || "";
+    if (validateHeight() && validateWeight()) calculateBMI(false);
+  } catch (error) {
+    console.warn("Could not restore BMI measurement.", error);
+  }
+})();

@@ -109,13 +109,36 @@
     </section>
 
     <!-- ============================================================
-         WORKOUT REMINDERS (frontend-only widget)
+         DISCOVER MORE — live data fetched from the free wger API
+         (js/exercise.js handles loading / success / error states)
+         ============================================================ -->
+    <section class="section api-section" aria-labelledby="api-title">
+      <div class="container">
+        <h2 id="api-title" class="section__title">Discover More Exercises</h2>
+        <p class="section__subtitle">
+          Fresh ideas fetched live from the free
+          <a href="https://wger.de/en/software/api" target="_blank" rel="noopener">wger Workout Manager API</a>.
+        </p>
+
+        <!-- Status box: spinner while loading, message + retry on error -->
+        <div class="api-status" id="api-status" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Loading exercises…</p>
+        </div>
+
+        <!-- API exercise cards injected by js/exercise.js -->
+        <div class="exercise-grid" id="api-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WORKOUT REMINDERS (persisted in localStorage)
          ============================================================ -->
     <section class="section section--alt reminders" aria-labelledby="reminders-title">
       <div class="container">
         <h2 id="reminders-title" class="section__title">Workout Reminders</h2>
         <p class="section__subtitle">
-          Plan your next sessions. Reminders live in this session only (no backend yet).
+          Plan your next sessions. Reminders are saved in your browser, so they survive a refresh.
         </p>
 
         <!-- Add-reminder form -->
