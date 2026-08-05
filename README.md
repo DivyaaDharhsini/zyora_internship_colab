@@ -76,8 +76,5 @@ Then open <http://localhost:5500>. (Opening the files directly also works, but a
 - All user data persisted in localStorage across refreshes
 - Consistent design system (teal/amber palette, Poppins + Inter)
 
-## What's left 📝
-
-- Add real exercise photos to `assets/images/` (emoji fallback currently shows)
-- Final cross-browser pass and demo-day polish
-- Optional: streak counter on the Weekly Summary
+Ready and deployed : 
+https://fittracker-mu-bice.vercel.app/
